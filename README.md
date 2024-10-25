@@ -6,17 +6,17 @@ The main purpose for writing this is to copy sqlite databases that you may not o
 
 ### Features
 
-- Has the option (true by default) to first [safely copy](https://github.com/seanbreckenridge/sqlite_backup/blob/cbe57a88bc987ca990edfb65b66f04b6d8765a5e/sqlite_backup/core.py#L48-L56) the database from disk to a temporary directory, which is:
+- Has the option (true by default) to first [safely copy](https://github.com/purarue/sqlite_backup/blob/cbe57a88bc987ca990edfb65b66f04b6d8765a5e/sqlite_backup/core.py#L48-L56) the database from disk to a temporary directory, which is:
   - useful in case the source is in read-only mode (e.g. in some sort of docker container)
   - safer if you're especially worried about corrupting or losing data
 - Uses [`Cpython`s Connection.backup](https://github.com/python/cpython/blob/8fb36494501aad5b0c1d34311c9743c60bb9926c/Modules/_sqlite/connection.c#L1716), which directly uses the [underlying Sqlite C code](https://www.sqlite.org/c3ref/backup_finish.html)
-- Performs a [`wal_checkpoint`](https://www.sqlite.org/pragma.html#pragma_wal_checkpoint) and sets `journal_mode=DELETE` after copying to the destination, to remove the WAL (write-ahead log; temporary database file). Typically the WAL is removed when the database is closed, but [particular builds of sqlite](https://sqlite.org/forum/forumpost/1fdfc1a0e7), the [default sqlite installed on mac](https://github.com/seanbreckenridge/sqlite_backup/issues/9), or sqlite compiled with [`SQLITE_DBCONFIG_NO_CKPT_ON_CLOSE` enabled](https://www.sqlite.org/c3ref/c_dbconfig_enable_fkey.html) or [`SQLITE_FCNTL_PERSIST_WAL`](https://www.sqlite.org/c3ref/c_fcntl_begin_atomic_write.html#sqlitefcntlpersistwal) may prevent that -- so the checkpoint exists to ensure there are no temporary files leftover
+- Performs a [`wal_checkpoint`](https://www.sqlite.org/pragma.html#pragma_wal_checkpoint) and sets `journal_mode=DELETE` after copying to the destination, to remove the WAL (write-ahead log; temporary database file). Typically the WAL is removed when the database is closed, but [particular builds of sqlite](https://sqlite.org/forum/forumpost/1fdfc1a0e7), the [default sqlite installed on mac](https://github.com/purarue/sqlite_backup/issues/9), or sqlite compiled with [`SQLITE_DBCONFIG_NO_CKPT_ON_CLOSE` enabled](https://www.sqlite.org/c3ref/c_dbconfig_enable_fkey.html) or [`SQLITE_FCNTL_PERSIST_WAL`](https://www.sqlite.org/c3ref/c_fcntl_begin_atomic_write.html#sqlitefcntlpersistwal) may prevent that -- so the checkpoint exists to ensure there are no temporary files leftover
 
 In short, this **prioritizes safety of the data** over performance (temporarily copying data files to `/tmp`) - because we often don't know what the application may be doing while we're copying underlying sqlite databases
 
 The initial backup function and some tests were extracted out of the [`karlicoss/HPI` `core/sqlite`](https://github.com/karlicoss/HPI/blob/a1f03f9c028df9d1898de2cc14f1df4fa6d8c471/my/core/sqlite.py#L33-L51) module
 
-If other tools exist to do this, please [let me know!](https://github.com/seanbreckenridge/sqlite_backup/issues/new)
+If other tools exist to do this, please [let me know!](https://github.com/purarue/sqlite_backup/issues/new)
 
 ## Installation
 
@@ -83,18 +83,18 @@ with sqlite_connect("/path/to/database") as conn:
 
 ```
 sqlite_backup --debug ~/.mozilla/firefox/ew9cqpqe.dev-edition-default/places.sqlite ./firefox.sqlite
-[D 220202 13:00:32 core:110] Source database files: '['/home/sean/.mozilla/firefox/ew9cqpqe.dev-edition-default/places.sqlite', '/home/sean/.mozilla/firefox/ew9cqpqe.dev-edition-default/places.sqlite-wal']'
+[D 220202 13:00:32 core:110] Source database files: '['/home/username/.mozilla/firefox/ew9cqpqe.dev-edition-default/places.sqlite', '/home/username/.mozilla/firefox/ew9cqpqe.dev-edition-default/places.sqlite-wal']'
 [D 220202 13:00:32 core:111] Temporary Destination database files: '['/tmp/tmpm2nhl1p3/places.sqlite', '/tmp/tmpm2nhl1p3/places.sqlite-wal']'
-[D 220202 13:00:32 core:64] Copied from '/home/sean/.mozilla/firefox/ew9cqpqe.dev-edition-default/places.sqlite' to '/tmp/tmpm2nhl1p3/places.sqlite' successfully; copied without file changing: True
-[D 220202 13:00:32 core:64] Copied from '/home/sean/.mozilla/firefox/ew9cqpqe.dev-edition-default/places.sqlite-wal' to '/tmp/tmpm2nhl1p3/places.sqlite-wal' successfully; copied without file changing: True
-[D 220202 13:00:32 core:240] Running backup, from '/tmp/tmpm2nhl1p3/places.sqlite' to '/home/sean/Repos/sqlite_backup/firefox.sqlite'
-Backed up /home/sean/.mozilla/firefox/ew9cqpqe.dev-edition-default/places.sqlite to /home/sean/Repos/sqlite_backup/firefox.sqlite
+[D 220202 13:00:32 core:64] Copied from '/home/username/.mozilla/firefox/ew9cqpqe.dev-edition-default/places.sqlite' to '/tmp/tmpm2nhl1p3/places.sqlite' successfully; copied without file changing: True
+[D 220202 13:00:32 core:64] Copied from '/home/username/.mozilla/firefox/ew9cqpqe.dev-edition-default/places.sqlite-wal' to '/tmp/tmpm2nhl1p3/places.sqlite-wal' successfully; copied without file changing: True
+[D 220202 13:00:32 core:240] Running backup, from '/tmp/tmpm2nhl1p3/places.sqlite' to '/home/username/Repos/sqlite_backup/firefox.sqlite'
+Backed up /home/username/.mozilla/firefox/ew9cqpqe.dev-edition-default/places.sqlite to /home/username/Repos/sqlite_backup/firefox.sqlite
 ```
 
 ### Tests
 
 ```bash
-git clone 'https://github.com/seanbreckenridge/sqlite_backup'
+git clone 'https://github.com/purarue/sqlite_backup'
 cd ./sqlite_backup
 pip install '.[testing]'
 mypy ./sqlite_backup

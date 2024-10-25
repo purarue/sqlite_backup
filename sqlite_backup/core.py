@@ -241,7 +241,7 @@ def sqlite_backup(
         with sqlite3.connect(copy_from, **sqlite_connect_kwargs) as conn:
             if copy_use_tempdir:
                 # workaround for leftover wal/shm files on some macos systems
-                # see https://github.com/seanbreckenridge/sqlite_backup/issues/9
+                # see https://github.com/purarue/sqlite_backup/issues/9
                 conn.execute("PRAGMA journal_mode=DELETE")
             conn.backup(target_connection, **sqlite_backup_kwargs)
 
