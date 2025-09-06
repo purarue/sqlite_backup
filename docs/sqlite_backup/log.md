@@ -5,6 +5,5 @@ Setup logging for this module
 Functions
 ---------
 
-    
-`setup(level: Optional[int] = None) ‑> logging.Logger`
+`setup(level: int | None = None) ‑> logging.Logger`
 :
