@@ -1,5 +1,4 @@
-name: Run s
-ests
+name: Run Tests
 
 on:
   push:
