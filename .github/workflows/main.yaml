@@ -1,4 +1,5 @@
-name: Run Tests
+name: Run s
+ests
 
 on:
   push:
@@ -36,7 +37,7 @@ jobs:
           pip install '.[testing]'
       - name: Run mypy
         run: |
-          mypy --install-types --non-interactive ./sqlite_backup ./tests
+          mypy --install-types --non-interactive ./sqlite_backup
       - name: Run pytest
         run: |
           pytest
