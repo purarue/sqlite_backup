@@ -36,7 +36,7 @@ jobs:
           pip install '.[testing]'
       - name: Run mypy
         run: |
-          mypy --install-types --non-interactive ./sqlite_backup ./tests setup.py
+          mypy --install-types --non-interactive ./sqlite_backup ./tests
       - name: Run pytest
         run: |
           pytest
