@@ -1,0 +1,58 @@
+[project]
+name = "sqlite_backup"
+version = "0.1.7"
+description = "A tool to copy sqlite databases you don't own"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+keywords = ["database", "sqlite"]
+classifiers = [
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dependencies = ["click>=8.0", "logzero"]
+[[project.authors]]
+name = "purarue"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+sqlite_backup = "sqlite_backup.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/purarue/sqlite_backup"
+
+[project.optional-dependencies]
+testing = ["pytest", "mypy", "flake8", "pytest-reraise"]
+
+[tool.mypy]
+pretty = "True"
+show_error_context = "True"
+show_error_codes = "True"
+check_untyped_defs = "True"
+namespace_packages = "True"
+disallow_any_generics = "True"
+disallow_subclassing_any = "True"
+disallow_untyped_calls = "True"
+disallow_untyped_defs = "True"
+disallow_incomplete_defs = "True"
+no_implicit_optional = "True"
+warn_redundant_casts = "True"
+warn_return_any = "True"
+warn_unreachable = "True"
+
+[tool.pytest.ini_options]
+addopts = "-rap --doctest-modules sqlite_backup ./tests/"
+
+[tool.setuptools.packages.find]
+include = ["sqlite_backup"]
+exclude = ["tests*"]
