@@ -7,13 +7,10 @@ import shutil
 from typing import (
     Union,
     Optional,
-    List,
-    Tuple,
-    Dict,
     Any,
-    Iterator,
     Callable,
 )
+from collections.abc import Iterator
 from pathlib import Path
 from contextlib import contextmanager
 from tempfile import TemporaryDirectory
@@ -72,11 +69,11 @@ def atomic_copy(src: str, dest: str) -> bool:
             succeeded = False
 
 
-def glob_database_files(source_database: Path) -> List[Path]:
+def glob_database_files(source_database: Path) -> list[Path]:
     """
     List any of the temporary database files (and the database itself)
     """
-    files: List[Path] = [source_database]
+    files: list[Path] = [source_database]
     for temp_db_file in source_database.parent.glob(source_database.name + "-*"):
         # shm should be recreated from scratch -- safer not to copy perhaps
         # https://www.sqlite.org/tempfiles.html#shared_memory_files
@@ -87,7 +84,7 @@ def glob_database_files(source_database: Path) -> List[Path]:
 
 
 def copy_all_files(
-    source_files: List[Path],
+    source_files: list[Path],
     temporary_dest: Path,
     copy_function: CopyFunction,
     retry: int,
@@ -110,7 +107,7 @@ def copy_all_files(
     # (source, destination) for each file
     logger.debug(f"Source database files: '{sources}'")
     logger.debug(f"Temporary Destination database files: '{destinations}'")
-    copies: List[Tuple[str, str]] = list(zip(sources, destinations))
+    copies: list[tuple[str, str]] = list(zip(sources, destinations))
     while retry >= 0:
         # if all files successfully copied according to atomic_copy's definition
         if all([copy_function(s, d) for s, d in copies]):
@@ -130,8 +127,8 @@ def sqlite_backup(
     copy_use_tempdir: bool = True,
     copy_retry: int = COPY_RETRY_DEFAULT,
     copy_retry_strict: bool = True,
-    sqlite_connect_kwargs: Optional[Dict[str, Any]] = None,
-    sqlite_backup_kwargs: Optional[Dict[str, Any]] = None,
+    sqlite_connect_kwargs: Optional[dict[str, Any]] = None,
+    sqlite_backup_kwargs: Optional[dict[str, Any]] = None,
     copy_function: Optional[CopyFunction] = None,
 ) -> Optional[sqlite3.Connection]:
     """

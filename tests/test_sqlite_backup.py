@@ -1,7 +1,8 @@
 import shutil
 import sqlite3
 from pathlib import Path
-from typing import Iterator, Any, Set
+from typing import Any
+from collections.abc import Iterator
 
 import pytest
 
@@ -35,7 +36,7 @@ def tmp_path_f(
     yield tmp_path_factory.mktemp(request.function.__name__, numbered=True)
 
 
-def _list_files(p: Path) -> Set[Path]:
+def _list_files(p: Path) -> set[Path]:
     return {f for f in p.iterdir() if f.is_file()}
 
 
