@@ -1,6 +1,6 @@
 [project]
 name = "sqlite_backup"
-version = "0.1.7"
+version = "0.1.8"
 description = "A tool to copy sqlite databases you don't own"
 readme = "README.md"
 license = "MIT"
