@@ -6,11 +6,9 @@ import shutil
 
 from typing import (
     Union,
-    Optional,
     Any,
-    Callable,
 )
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from pathlib import Path
 from contextlib import contextmanager
 from tempfile import TemporaryDirectory
@@ -32,7 +30,7 @@ class SqliteBackupError(RuntimeError):
 @contextmanager
 def sqlite_connect_immutable(db: PathIsh) -> Iterator[sqlite3.Connection]:
     # https://www.sqlite.org/draft/uri.html#uriimmutable
-    conn: Union[sqlite3.Connection, None] = None
+    conn: sqlite3.Connection | None = None
     try:
         with sqlite3.connect(f"file:{db}?immutable=1", uri=True) as conn:
             yield conn
@@ -121,16 +119,16 @@ def copy_all_files(
 
 def sqlite_backup(
     source: PathIsh,
-    destination: Optional[PathIsh] = None,
+    destination: PathIsh | None = None,
     *,
     wal_checkpoint: bool = True,
     copy_use_tempdir: bool = True,
     copy_retry: int = COPY_RETRY_DEFAULT,
     copy_retry_strict: bool = True,
-    sqlite_connect_kwargs: Optional[dict[str, Any]] = None,
-    sqlite_backup_kwargs: Optional[dict[str, Any]] = None,
-    copy_function: Optional[CopyFunction] = None,
-) -> Optional[sqlite3.Connection]:
+    sqlite_connect_kwargs: dict[str, Any] | None = None,
+    sqlite_backup_kwargs: dict[str, Any] | None = None,
+    copy_function: CopyFunction | None = None,
+) -> sqlite3.Connection | None:
     """
     'Snapshots' the source database and opens by making a deep copy of it, including journal/WAL files
 

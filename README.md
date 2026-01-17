@@ -20,7 +20,7 @@ If other tools exist to do this, please [let me know!](https://github.com/puraru
 
 ## Installation
 
-Requires `python3.8+`
+Requires `python3.10+`
 
 To install with pip, run:
 

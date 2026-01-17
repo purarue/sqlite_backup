@@ -3,7 +3,7 @@ The run_in_thread function is used to automate and sanity
 check running tests in this module
 """
 
-from typing import Callable
+from collections.abc import Callable
 from threading import Thread
 
 
