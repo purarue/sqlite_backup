@@ -9,7 +9,7 @@ Sub-modules
 Functions
 ---------
 
-`sqlite_backup(source: str | pathlib.Path, destination: str | pathlib.Path | None = None, *, wal_checkpoint: bool = True, copy_use_tempdir: bool = True, copy_retry: int = 100, copy_retry_strict: bool = True, sqlite_connect_kwargs: Dict[str, Any] | None = None, sqlite_backup_kwargs: Dict[str, Any] | None = None, copy_function: Callable[[str, str], bool] | None = None) ‑> sqlite3.Connection | None`
+`sqlite_backup(source: str | pathlib.Path, destination: str | pathlib.Path | None = None, *, wal_checkpoint: bool = True, copy_use_tempdir: bool = True, copy_retry: int = 100, copy_retry_strict: bool = True, sqlite_connect_kwargs: dict[str, typing.Any] | None = None, sqlite_backup_kwargs: dict[str, typing.Any] | None = None, copy_function: Callable[[str, str], bool] | None = None) ‑> sqlite3.Connection | None`
 :   'Snapshots' the source database and opens by making a deep copy of it, including journal/WAL files
     
     If you don't specify a 'destination', this copies the database
