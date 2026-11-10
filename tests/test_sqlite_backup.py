@@ -332,3 +332,29 @@ def test_copy_different_source_and_dest(
     assert isinstance(err, ValueError)
     assert "'source' and 'destination'" in str(err)
     assert "can't be the same" in str(err)
+
+
+def test_cli_rejects_negative_copy_retry(
+    sqlite_with_wal: Path, tmp_path_f: Path
+) -> None:
+    """
+    a negative --copy-retry is meaningless; the CLI should reject it
+    with a usage error instead of crashing with SqliteBackupError
+    """
+    from click.testing import CliRunner
+
+    from sqlite_backup.__main__ import main
+
+    runner = CliRunner()
+    result = runner.invoke(
+        main,
+        [
+            str(sqlite_with_wal),
+            str(tmp_path_f / 'out.sqlite'),
+            '--copy-retry',
+            '-1',
+        ],
+    )
+    assert result.exit_code == 2
+    assert isinstance(result.exception, SystemExit)
+    assert result.exception.code == 2
