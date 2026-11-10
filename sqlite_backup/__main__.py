@@ -30,7 +30,7 @@ CONTEXT_SETTINGS = {
 @click.option(
     "--copy-retry",
     default=COPY_RETRY_DEFAULT,
-    type=int,
+    type=click.IntRange(min=0),
     show_default=False,
     help="If the files change while copying to the temporary directory, retry <n> times",
 )
